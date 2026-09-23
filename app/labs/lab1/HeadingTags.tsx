@@ -18,9 +18,10 @@ export default function HeadingTags() {
       </div>
       <div id="wd-your-heading">
         <h4>Tyler</h4>
-        Hi, my name is Tyler! I&apos;m a fourth year CS student at Northeastern,
-        with an interest in software engineering and game development. In my
-        free time, I like to explore local coffee shops, cook, and build games!
+        Hi, my name is <span id="wd-your-span">Tyler!</span> I&apos;m a fourth
+        year CS student at Northeastern, with an interest in software
+        engineering and game development. In my free time, I like to explore
+        local coffee shops, cook, and build games!
       </div>
       <div id="wd-ai-headings">
         <h4>Lab notes</h4>

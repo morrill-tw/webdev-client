@@ -7,10 +7,9 @@ export default function AssignmentEditor() {
       <input id="wd-name" defaultValue="A1 - ENV + HTML" />
       <br />
       <br />
-      <textarea
-        id="wd-description"
-        defaultValue="The assignment is available online Submit a link to the landing page of"
-      />
+      <textarea id="wd-description">
+        The assignment is available online Submit a link to the landing page of
+      </textarea>
       <br />
       <table>
         <tbody>
@@ -23,74 +22,113 @@ export default function AssignmentEditor() {
             </td>
           </tr>
           <tr>
-            <select id="wd-group">
-              <option value="assignemnts">ASSIGNMENTS</option>
-              <option value="quizzes">QUIZZES</option>
-              <option value="exams">EXAMS</option>
-              <option value="projects">PROJECTS</option>
-            </select>
+            <td align="right" valign="top">
+              <label htmlFor="wd-group">Assignment Group</label>
+            </td>
+            <td>
+              <select id="wd-group" defaultValue="ASSIGNMENTS">
+                <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                <option value="QUIZZES">QUIZZES</option>
+                <option value="EXAMS">EXAMS</option>
+                <option value="PROJECTS">PROJECTS</option>
+              </select>
+            </td>
           </tr>
           <tr>
-            <select id="wd-display-grade-as">
-              <option value="total">TOTAL</option>
-              <option value="percentage">PERCENTAGE</option>
-            </select>
+            <td align="right" valign="top">
+              <label htmlFor="wd-display-grade-as">Display Grade as</label>
+            </td>
+            <td>
+              <select id="wd-display-grade-as" defaultValue="Percentage">
+                <option value="Percentage">Percentage</option>
+                <option value="Fraction">Fraction</option>
+              </select>
+            </td>
           </tr>
           <tr>
-            <select id="wd-submission-type">
-              <option value="in-person">In Person</option>
-              <option value="online">Online</option>
-            </select>
+            <td align="right" valign="top">
+              <label htmlFor="wd-submission-type">Submission Type</label>
+            </td>
+            <td>
+              <select id="wd-submission-type" defaultValue="Online">
+                <option value="Online">Online</option>
+                <option value="In Person">In Person</option>
+              </select>
+              <h4>Online Entry Options</h4>
+              <input
+                type="checkbox"
+                name="online-entry-option"
+                id="wd-text-entry"
+              />
+              <label htmlFor="wd-text-entry">Text Entry</label>
+              <br />
+              <input
+                type="checkbox"
+                name="online-entry-option"
+                id="wd-text-entry"
+              />
+              <label htmlFor="wd-website-url">Website URL</label>
+              <br />
+              <input
+                type="checkbox"
+                name="online-entry-option"
+                id="wd-website-url"
+              />
+              <label htmlFor="wd-media-recordings">Media Recordings</label>
+              <br />
+              <input
+                type="checkbox"
+                name="online-entry-option"
+                id="wd-media-recordings"
+              />
+              <label htmlFor="wd-student-annotation">Student Annotation</label>
+              <br />
+              <input
+                type="checkbox"
+                name="online-entry-option"
+                id="wd-text-entry"
+              />
+              <label htmlFor="wd-file-upload">File Uploads</label>
+            </td>
           </tr>
           <tr>
-            <label>
-              <input id="wd-text-entry" type="checkbox">
-                Text Entry
-              </input>
-            </label>
-            <label>
-              <input id="wd-website-url" type="checkbox">
-                Website URL
-              </input>
-            </label>
-            <label>
-              <input id="wd-media-recordings" type="checkbox">
-                Media Recordings
-              </input>
-            </label>
-            <label>
-              <input id="wd-student-annotation" type="checkbox">
-                Student Annotation
-              </input>
-            </label>
-            <label>
-              <input id="wd-file-upload" type="checkbox">
-                File Upload
-              </input>
-            </label>
-          </tr>
-          <tr>
-            <select id="wd-assign-to">
-              <option value="everyone">Everyone</option>
-            </select>
-          </tr>
-          <tr>
-            <label>Due Date:</label>
-            <input id="wd-due-date" type="date"></input>
-            <label>Available from:</label>
-            <input id="wd-available-from" type="date"></input>
-            <label>Until:</label>
-            <input id="wd-available-until" type="date"></input>
-          </tr>
-          <tr>
-            <Link id="wd-cancel" href="/">
-              <button>Cancel</button>
-            </Link>
-            <Link id="wd-save" href="/">
-              <button>Save</button>
-            </Link>
+            <td align="right" valign="top">
+              <label>Assign</label>
+            </td>
+            <td>
+              <label htmlFor="wd-assign-to">Assign to</label>
+              <select id="wd-assign-to" defaultValue="Everyone">
+                <option value="Percentage">Everyone</option>
+              </select>
+              <br />
+              <label htmlFor="wd-due-date">Due</label>
+              <br />
+              <input id="wd-due-date" type="date" />
+              <br />
+              <label htmlFor="wd-available-from">Available from</label>
+              <br />
+              <input id="wd-available-from" type="date" />
+              <br />
+              <label htmlFor="wd-available-until">Until</label>
+              <br />
+              <input id="wd-available-until" type="date" />
+            </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td align="right">
+              <Link href="/assignments" id="wd-cancel">
+                Cancel
+              </Link>
+              <br />
+              <Link href="/assignments" id="wd-save">
+                Save
+              </Link>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
