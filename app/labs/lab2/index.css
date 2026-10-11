@@ -437,3 +437,6 @@ img.wd-float-right {
   width: 110px;
   flex-shrink: 0;
 }
+.red-icon {
+  color: blue;
+}
