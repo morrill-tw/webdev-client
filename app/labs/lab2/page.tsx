@@ -125,6 +125,9 @@ export default function Lab2() {
       <Flex />
       <MediaQueriesDemo />
       <ReactIconsSampler />
+      <p>
+        <a href="/labs/lab2/tailwind">Open Tailwind CSS lab →</a>
+      </p>
     </div>
   );
 }
