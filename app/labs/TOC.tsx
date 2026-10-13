@@ -32,8 +32,11 @@ export default function TOC() {
           </Link>
         </li>
         <li>
-          <Link href="/book/ch1" id="wd-toc-book-link">
-            Chapter 1
+          <Link
+            href="https://github.com/morrill-tw/webdev-client"
+            id="wd-github"
+          >
+            Tyler Morrill - Github
           </Link>
         </li>
         <li>

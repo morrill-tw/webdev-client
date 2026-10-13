@@ -8,9 +8,7 @@ export default function AnchorTag() {
       </a>{" "}
       to get dummy text
       <br />
-      <a href="https://github.com/morrill-tw/webdev-client" id="wd-github">
-        GitHub
-      </a>
+      <a>GitHub</a>
       <br />
       <a id="wd-your-link" href="https://www.nytimes.com/">
         New York Times
