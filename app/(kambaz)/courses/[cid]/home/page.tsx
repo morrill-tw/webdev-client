@@ -10,7 +10,7 @@ export default function Home() {
             <td valign="top" width="70%">
               <Modules />
             </td>
-            <td valign="top">
+            <td valign="top" className="hidden lg:table-cell">
               <CourseStatus />
             </td>
           </tr>
