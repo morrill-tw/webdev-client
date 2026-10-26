@@ -38,7 +38,7 @@ const LINKS = [
   {
     href: "https://github.com/morrill-tw/webdev-client",
     id: "my-github-repo",
-    label: "My Github Repo",
+    label: "Tyler Morrill - Github Repo",
     match: () => false,
   },
 ] as const;
