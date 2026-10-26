@@ -1,26 +1,29 @@
 import Link from "next/link";
+import * as db from "../../../../database";
 
 export default async function AssignmentEditor({
   params,
 }: {
-  params: Promise<{ cid: string }>;
+  params: Promise<{ cid: string; aid: string }>;
 }) {
-  const { cid } = await params;
+  const { cid, aid } = await params;
+  const assignment = db.assignments.find((a) => a._id === aid);
   return (
     <div id="wd-assignments-editor" className="w-[460px]">
       <label htmlFor="wd-name">Assignment Name</label>
       <br />
       <input
         id="wd-name"
-        defaultValue="A1 - ENV + HTML"
+        defaultValue={assignment?.title ?? ""}
         className="rounded p-2 w-full"
       />
       <br />
+      <p id="wd-assignment-id">Assignment id: {aid}</p>
       <br />
       <textarea
         id="wd-description"
         className="rounded p-2 w-full"
-        defaultValue="The assignment is available online Submit a link to the landing page of"
+        defaultValue={assignment?.description ?? ""}
       ></textarea>
       <br />
       <div className="grid grid-cols-[150px_1fr] gap-3">
@@ -30,7 +33,7 @@ export default async function AssignmentEditor({
         <div className="text-left">
           <input
             id="wd-points"
-            defaultValue={100}
+            defaultValue={assignment?.points ?? 100}
             className="rounded p-2 w-full"
           />
         </div>
@@ -132,7 +135,12 @@ export default async function AssignmentEditor({
             Due
           </label>
           <br />
-          <input className="rounded p-2" id="wd-due-date" type="date" />
+          <input
+            className="rounded p-2"
+            id="wd-due-date"
+            type="date"
+            defaultValue={assignment?.due ?? ""}
+          />
           <br />
           <div className="grid grid-cols-2 gap-1">
             <label className="font-bold" htmlFor="wd-available-from">
@@ -141,7 +149,12 @@ export default async function AssignmentEditor({
             <label className="font-bold" htmlFor="wd-available-until">
               Until
             </label>
-            <input className="rounded p-2" id="wd-available-from" type="date" />
+            <input
+              className="rounded p-2"
+              id="wd-available-from"
+              type="date"
+              defaultValue={assignment?.available ?? ""}
+            />
             <input
               className="rounded p-2"
               id="wd-available-until"
