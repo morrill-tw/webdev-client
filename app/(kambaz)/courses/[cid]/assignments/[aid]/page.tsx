@@ -1,29 +1,58 @@
-import Link from "next/link";
-import * as db from "../../../../database";
+"use client";
 
-export default async function AssignmentEditor({
-  params,
-}: {
-  params: Promise<{ cid: string; aid: string }>;
-}) {
-  const { cid, aid } = await params;
-  const assignment = db.assignments.find((a) => a._id === aid);
+import { useState } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import {
+  useAssignmentsStore,
+  type Assignment,
+} from "../../../../store/assignmentsStore";
+
+export default function AssignmentEditor() {
+  const { cid, aid } = useParams<{ cid: string; aid: string }>();
+  const router = useRouter();
+  const assignments = useAssignmentsStore((state) => state.assignments);
+  const addAssignment = useAssignmentsStore((state) => state.addAssignment);
+  const updateAssignment = useAssignmentsStore(
+    (state) => state.updateAssignment,
+  );
+  const existing = assignments.find((a) => a._id === aid && a.course === cid);
+  const [draft, setDraft] = useState<Omit<Assignment, "_id">>({
+    title: existing?.title ?? "",
+    course: cid,
+    description: existing?.description ?? "",
+    points: existing?.points ?? 100,
+    due: existing?.due ?? "",
+    available: existing?.available ?? "",
+    availableUntil: existing?.availableUntil ?? "",
+  });
+
+  const save = () => {
+    if (existing) {
+      updateAssignment({ ...existing, ...draft });
+    } else {
+      addAssignment(draft);
+    }
+    router.push(`/courses/${cid}/assignments`);
+  };
+
   return (
     <div id="wd-assignments-editor" className="w-[460px]">
       <label htmlFor="wd-name">Assignment Name</label>
       <br />
       <input
         id="wd-name"
-        defaultValue={assignment?.title ?? ""}
+        value={draft.title}
+        onChange={(e) => setDraft({ ...draft, title: e.target.value })}
         className="rounded p-2 w-full"
       />
       <br />
       <p id="wd-assignment-id">Assignment id: {aid}</p>
-      <br />
       <textarea
         id="wd-description"
         className="rounded p-2 w-full"
-        defaultValue={assignment?.description ?? ""}
+        value={draft.description}
+        onChange={(e) => setDraft({ ...draft, description: e.target.value })}
       ></textarea>
       <br />
       <div className="grid grid-cols-[150px_1fr] gap-3">
@@ -33,104 +62,16 @@ export default async function AssignmentEditor({
         <div className="text-left">
           <input
             id="wd-points"
-            defaultValue={assignment?.points ?? 100}
+            type="number"
+            value={draft.points}
+            onChange={(e) =>
+              setDraft({ ...draft, points: Number(e.target.value) })
+            }
             className="rounded p-2 w-full"
           />
         </div>
-
-        <label htmlFor="wd-group" className="text-right pt-2">
-          Assignment Group
-        </label>
-        <div className="text-left">
-          <select
-            id="wd-group"
-            defaultValue="ASSIGNMENTS"
-            className="rounded p-2 w-full"
-          >
-            <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-            <option value="QUIZZES">QUIZZES</option>
-            <option value="EXAMS">EXAMS</option>
-            <option value="PROJECTS">PROJECTS</option>
-          </select>
-        </div>
-
-        <label htmlFor="wd-display-grade-as" className="text-right pt-2">
-          Display Grade as
-        </label>
-        <div className="text-left">
-          <select
-            id="wd-display-grade-as"
-            defaultValue="Percentage"
-            className="rounded p-2 w-full"
-          >
-            <option value="Percentage">Percentage</option>
-            <option value="Fraction">Fraction</option>
-          </select>
-        </div>
-
-        <label htmlFor="wd-submission-type" className="text-right pt-2">
-          Submission Type
-        </label>
-        <div className="rounded outline outline-2 outline-gray-400 p-4 text-left">
-          <select
-            className="rounded p-2"
-            id="wd-submission-type"
-            defaultValue="Online"
-          >
-            <option value="Online">Online</option>
-            <option value="In Person">In Person</option>
-          </select>
-          <h4>Online Entry Options</h4>
-          <input
-            type="checkbox"
-            name="online-entry-option"
-            id="wd-text-entry"
-          />
-          <label htmlFor="wd-text-entry">Text Entry</label>
-          <br />
-          <input
-            type="checkbox"
-            name="online-entry-option"
-            id="wd-text-entry"
-          />
-          <label htmlFor="wd-website-url">Website URL</label>
-          <br />
-          <input
-            type="checkbox"
-            name="online-entry-option"
-            id="wd-website-url"
-          />
-          <label htmlFor="wd-media-recordings">Media Recordings</label>
-          <br />
-          <input
-            type="checkbox"
-            name="online-entry-option"
-            id="wd-media-recordings"
-          />
-          <label htmlFor="wd-student-annotation">Student Annotation</label>
-          <br />
-          <input
-            type="checkbox"
-            name="online-entry-option"
-            id="wd-text-entry"
-          />
-          <label htmlFor="wd-file-upload">File Uploads</label>
-        </div>
-
         <label className="text-right pt-2">Assign</label>
         <div className="rounded outline outline-2 outline-gray-400 p-4 text-left">
-          <label className="font-bold" htmlFor="wd-assign-to">
-            Assign to
-          </label>
-          <br />
-          <select
-            className="rounded p-2"
-            id="wd-assign-to"
-            defaultValue="Everyone"
-          >
-            <option value="Percentage">Everyone</option>
-          </select>
-          <br />
           <label className="font-bold" htmlFor="wd-due-date">
             Due
           </label>
@@ -139,7 +80,8 @@ export default async function AssignmentEditor({
             className="rounded p-2"
             id="wd-due-date"
             type="date"
-            defaultValue={assignment?.due ?? ""}
+            value={draft.due}
+            onChange={(e) => setDraft({ ...draft, due: e.target.value })}
           />
           <br />
           <div className="grid grid-cols-2 gap-1">
@@ -153,24 +95,21 @@ export default async function AssignmentEditor({
               className="rounded p-2"
               id="wd-available-from"
               type="date"
-              defaultValue={assignment?.available ?? ""}
+              value={draft.available}
+              onChange={(e) =>
+                setDraft({ ...draft, available: e.target.value })
+              }
             />
             <input
               className="rounded p-2"
               id="wd-available-until"
               type="date"
+              value={draft.availableUntil}
+              onChange={(e) =>
+                setDraft({ ...draft, availableUntil: e.target.value })
+              }
             />
           </div>
-        </div>
-
-        <label htmlFor="wd-ai-editor-notes" className="text-right pt-2">
-          Sample notes
-        </label>
-        <div className="text-left">
-          <textarea
-            id="wd-ai-editor-notes"
-            className="rounded p-2 w-full"
-          ></textarea>
         </div>
 
         <div></div>
@@ -182,13 +121,14 @@ export default async function AssignmentEditor({
           >
             Cancel
           </Link>
-          <Link
-            href={`/courses/${cid}/assignments`}
+          <button
+            type="button"
+            onClick={save}
             id="wd-save"
-            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white no-underline"
+            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
           >
             Save
-          </Link>
+          </button>
         </div>
       </div>
     </div>

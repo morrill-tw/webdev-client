@@ -1,34 +1,63 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAccountContext } from "../AccountContext";
 
 export default function Signup() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
+
+  const signup = () => {
+    if (!username || !password) return;
+    setCurrentUser({
+      _id: crypto.randomUUID(),
+      username,
+      password,
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "STUDENT",
+      loginId: "",
+      section: "",
+      lastActivity: "",
+      totalActivity: "",
+    });
+    router.push("/account/profile");
+  };
+
   return (
     <div id="wd-signup-screen">
-      <h2>Sign up</h2>
+      <h3>Sign up</h3>
       <input
+        id="wd-username"
         placeholder="username"
         className="mb-2 wd-username outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
-        defaultValue="ada"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <input
+        id="wd-password"
         placeholder="password"
-        type="password"
         className="mb-2 wd-password outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
-        defaultValue="123"
-      />
-      <input
-        placeholder="verify password"
         type="password"
-        className="mb-2 wd-password-verify outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
-      <Link
-        href="/account/profile"
+      <button
+        type="button"
+        onClick={signup}
         id="wd-signup-btn"
         className="box-border block w-64 text-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white no-underline"
       >
         Sign up
+      </button>{" "}
+      <Link href="/account/signin" id="wd-signin-link">
+        Sign in
       </Link>
-      <br />
-      <Link href="/account/signin">Sign in</Link>
     </div>
   );
 }

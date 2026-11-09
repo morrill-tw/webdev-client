@@ -1,46 +1,62 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAccountContext, type User } from "../AccountContext";
 
 export default function Profile() {
+  const [profile, setProfile] = useState<User | null>(null);
+  const { currentUser, setCurrentUser } = useAccountContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push("/account/signin");
+      return;
+    }
+    setProfile(currentUser);
+  }, [currentUser, router]);
+
+  const signout = () => {
+    setCurrentUser(null);
+    router.push("/account/signin");
+  };
+
+  if (!profile) return null;
   return (
     <div id="wd-profile-screen">
-      <h2>Profile</h2>
+      <h3>Profile</h3>
       <input
-        defaultValue="alice"
-        placeholder="username"
-        className="mb-2 wd-username outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
+        id="wd-username"
+        value={profile.username}
+        onChange={(e) => setProfile({ ...profile, username: e.target.value })}
       />
       <input
-        defaultValue="123"
+        value={profile.password}
         placeholder="password"
         type="password"
         className="mb-2 wd-password outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
       />
       <input
         className="mb-2 outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
-        defaultValue="Alice"
+        value={profile.firstName}
         placeholder="First Name"
         id="wd-firstname"
       />
       <input
-        defaultValue="Wonderland"
+        value={profile.lastName}
         placeholder="Last Name"
         id="wd-lastname"
         className="mb-2 outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
       />
       <input
         className="mb-2 outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
-        defaultValue="2000-01-01"
-        type="date"
-        id="wd-dob"
-      />
-      <input
-        className="mb-2 outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
-        defaultValue="alice@wonderland"
+        value={profile.email}
         type="email"
         id="wd-email"
       />
       <select
-        defaultValue="FACULTY"
+        value={profile.role}
         id="wd-role"
         className="mb-2 outline-none rounded border border-2 border-gray-400 p-2 text-left box-border block w-64"
       >
@@ -49,13 +65,9 @@ export default function Profile() {
         <option value="FACULTY">Faculty</option>
         <option value="STUDENT">Student</option>
       </select>
-      <Link
-        href="/account/signin"
-        id="wd-signout-btn"
-        className="box-border block w-64 text-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white no-underline"
-      >
+      <button type="button" onClick={signout} id="wd-signout-btn">
         Sign out
-      </Link>
+      </button>
     </div>
   );
 }
