@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import Module from "./Module";
 import { useModulesStore } from "../../../store/modulesStore";
-import ModulesControls from "./ModuleControls";
+import ModulesControls from "./ModulesControls";
 
 export default function Modules() {
   const { cid } = useParams();
